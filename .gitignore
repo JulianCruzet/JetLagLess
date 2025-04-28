@@ -49,4 +49,7 @@ next-env.d.ts
 *.swp
 
 # Misc
-*.local 
+*.local
+
+# Large files
+Discord_BrandGuideline_051421.pdf 
