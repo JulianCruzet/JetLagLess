@@ -587,7 +587,7 @@ export default function Home() {
                   </div>
 
                   <div className="space-y-2">
-                    {result.schedule.map((day: any, i: number) => (
+                    {result.schedule.map((day: ScheduleDay, i: number) => (
                       <div key={i} className="flex justify-between items-center p-3 bg-[#40444b] rounded-md">
                         <span className="text-[#dcddde] font-medium">{day.day}</span>
                         <div className="flex gap-4">
