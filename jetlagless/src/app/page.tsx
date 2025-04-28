@@ -229,6 +229,24 @@ function WumpusGif() {
   );
 }
 
+interface ScheduleDay {
+  day: string;
+  bedtime: string;
+  waketime: string;
+}
+
+interface TimeZoneInfo {
+  departureCity: string;
+  arrivalCity: string;
+  timeDifference: number;
+  direction: string;
+}
+
+interface Result {
+  schedule: ScheduleDay[];
+  timeZoneInfo: TimeZoneInfo;
+}
+
 export default function Home() {
   const [step, setStep] = useState(0);
   const [departureCity, setDepartureCity] = useState('');
@@ -239,7 +257,7 @@ export default function Home() {
   const [daysBefore, setDaysBefore] = useState('');
   const [bedtime, setBedtime] = useState('');
   const [waketime, setWaketime] = useState('');
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<Result | null>(null);
   const [fade, setFade] = useState(false);
   const [headerRaised, setHeaderRaised] = useState(false);
   const [buttonFade, setButtonFade] = useState(false);
@@ -383,7 +401,7 @@ export default function Home() {
     const shiftPerDay = Math.round(tzDiff / days * 100) / 100;
     
     // Build schedule
-    const schedule = [];
+    const schedule: ScheduleDay[] = [];
     for (let i = 0; i < days; i++) {
       // Shift bedtime and waketime
       const bedShift = setMinutes(setHours(startDate, usualBed.getHours()), usualBed.getMinutes());
@@ -433,7 +451,7 @@ export default function Home() {
                   className="discord-button w-full bg-[#5865f2] text-white font-bold py-3 text-lg hover:bg-[#4752c4] transition-all duration-300"
                   onClick={handleStart}
                 >
-                  Let's Get Started
+                  Let&apos;s Get Started
                 </button>
               </div>
             </div>

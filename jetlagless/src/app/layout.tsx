@@ -1,6 +1,7 @@
 import * as React from 'react'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import Link from 'next/link'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -21,8 +22,8 @@ export default function RootLayout({
         <header className="w-full bg-[#23272a] py-4 px-6 flex items-center justify-between shadow-md">
           <span className="text-2xl font-bold text-[#5865f2] tracking-tight">JetLagLess</span>
           <nav className="space-x-6">
-            <a href="/" className="text-[#dcddde] hover:text-[#5865f2] font-medium">Calculator</a>
-            <a href="/about" className="text-[#dcddde] hover:text-[#5865f2] font-medium">About</a>
+            <Link href="/" className="text-[#dcddde] hover:text-[#5865f2] font-medium">Calculator</Link>
+            <Link href="/about" className="text-[#dcddde] hover:text-[#5865f2] font-medium">About</Link>
             <a href="https://juliancruzet.ca" target="_blank" rel="noopener noreferrer" className="text-[#dcddde] hover:text-[#5865f2] font-medium">Creator</a>
           </nav>
         </header>
