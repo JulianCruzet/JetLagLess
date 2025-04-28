@@ -177,7 +177,7 @@ function VerticalProgress({ currentStep }: { currentStep: number }) {
   ];
 
   return (
-    <div className="absolute -left-72 top-1/2 transform -translate-y-1/2 hidden lg:block">
+    <div className="absolute -left-72 top-1/2 transform -translate-y-1/2 hidden xl:block">
       <div className="relative h-[400px] flex flex-col justify-between">
         <div className="absolute top-0 bottom-0 left-[20px] w-0.5 bg-[#40444b] -z-10">
           <div 
@@ -217,7 +217,7 @@ function VerticalProgress({ currentStep }: { currentStep: number }) {
 
 function WumpusGif() {
   return (
-    <div className="absolute -right-96 top-1/2 transform -translate-y-1/2 hidden lg:block">
+    <div className="absolute -right-96 top-1/2 transform -translate-y-1/2 hidden xl:block">
       <Image
         src="/wumpus-sleeping.gif"
         alt="Sleeping Wumpus"
@@ -498,7 +498,7 @@ export default function Home() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto flex flex-col items-center justify-center min-h-[80vh] w-full relative">
+    <div className="w-full min-h-[80vh] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-2xl mx-auto relative">
         <WumpusGif />
         <VerticalProgress currentStep={step} />
@@ -506,10 +506,10 @@ export default function Home() {
         <div className="w-full flex flex-col items-center">
           {/* Title and Subtitle - Only visible on landing page */}
           {step === 0 && showTitle && (
-            <div className={`w-full flex flex-col items-center transition-all duration-500 ease-in-out ${landingFade ? 'opacity-0 -translate-y-8' : 'opacity-100 translate-y-0'} py-16`}>
+            <div className={`w-full flex flex-col items-center transition-all duration-500 ease-in-out ${landingFade ? 'opacity-0 -translate-y-8' : 'opacity-100 translate-y-0'} py-8 sm:py-16`}>
               <div className="w-full space-y-1">
-                <h1 className="text-3xl font-bold text-[#5865f2] text-center">{sectionTitles[0].title}</h1>
-                <p className="text-[#dcddde] text-center mt-2">{sectionTitles[0].subtitle}</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-[#5865f2] text-center">{sectionTitles[0].title}</h1>
+                <p className="text-[#dcddde] text-center mt-2 text-sm sm:text-base">{sectionTitles[0].subtitle}</p>
               </div>
               <div className="discord-card mb-8 bg-[#36393f] pt-6 pb-6 w-full">
                 <button 
@@ -523,12 +523,12 @@ export default function Home() {
           )}
           {/* Step 1: Trip Info */}
           {showStep1 && step === 1 && (
-            <div key="trip-details" className={`w-full ${isAnimatingOut ? 'fade-up-out' : 'fade-up-animate'} py-16`}>
+            <div key="trip-details" className={`w-full ${isAnimatingOut ? 'fade-up-out' : 'fade-up-animate'} py-8 sm:py-16`}>
               <div className="mb-6">
-                <h1 className="text-3xl font-bold text-[#5865f2] text-center">{sectionTitles[1].title}</h1>
-                <p className="text-[#dcddde] text-center mt-2">{sectionTitles[1].subtitle}</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-[#5865f2] text-center">{sectionTitles[1].title}</h1>
+                <p className="text-[#dcddde] text-center mt-2 text-sm sm:text-base">{sectionTitles[1].subtitle}</p>
               </div>
-              <div className="discord-card bg-[#36393f]">
+              <div className="discord-card bg-[#36393f] p-4 sm:p-6">
                 <form onSubmit={e => { e.preventDefault(); nextStep(); }} className="space-y-6">
                   <div className="flex gap-4 flex-col sm:flex-row">
                     <div className="flex-1">
@@ -549,7 +549,7 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="space-y-4">
-                    <div className="flex gap-4">
+                    <div className="flex gap-4 flex-col sm:flex-row">
                       <div className="flex-1">
                         <label className="block text-sm font-medium mb-2 text-[#dcddde]">Departure Date</label>
                         <input 
@@ -577,7 +577,7 @@ export default function Home() {
                         />
                       </div>
                     </div>
-                    <div className="flex gap-4">
+                    <div className="flex gap-4 flex-col sm:flex-row">
                       <div className="flex-1">
                         <label className="block text-sm font-medium mb-2 text-[#dcddde]">Arrival Date</label>
                         <input 
@@ -613,12 +613,12 @@ export default function Home() {
           )}
           {/* Step 2: Adjustment Preference */}
           {step === 2 && (
-            <div key="adjustment-preference" className={`w-full ${isAnimatingOut ? 'fade-up-out' : 'fade-up-animate'} py-16`}>
+            <div key="adjustment-preference" className={`w-full ${isAnimatingOut ? 'fade-up-out' : 'fade-up-animate'} py-8 sm:py-16`}>
               <div className="mb-6">
-                <h1 className="text-3xl font-bold text-[#5865f2] text-center">{sectionTitles[2].title}</h1>
-                <p className="text-[#dcddde] text-center mt-2">{sectionTitles[2].subtitle}</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-[#5865f2] text-center">{sectionTitles[2].title}</h1>
+                <p className="text-[#dcddde] text-center mt-2 text-sm sm:text-base">{sectionTitles[2].subtitle}</p>
               </div>
-              <div className="discord-card bg-[#36393f]">
+              <div className="discord-card bg-[#36393f] p-4 sm:p-6">
                 <form onSubmit={e => { e.preventDefault(); nextStep(); }} className="space-y-6">
                   <div className="space-y-3">
                     {adjustmentOptions.map(opt => (
@@ -668,12 +668,12 @@ export default function Home() {
           )}
           {/* Step 3: Usual Sleep Schedule */}
           {step === 3 && (
-            <div key="sleep-schedule" className={`w-full ${isAnimatingOut ? 'fade-up-out' : 'fade-up-animate'} py-16`}>
+            <div key="sleep-schedule" className={`w-full ${isAnimatingOut ? 'fade-up-out' : 'fade-up-animate'} py-8 sm:py-16`}>
               <div className="mb-6">
-                <h1 className="text-3xl font-bold text-[#5865f2] text-center">{sectionTitles[3].title}</h1>
-                <p className="text-[#dcddde] text-center mt-2">{sectionTitles[3].subtitle}</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-[#5865f2] text-center">{sectionTitles[3].title}</h1>
+                <p className="text-[#dcddde] text-center mt-2 text-sm sm:text-base">{sectionTitles[3].subtitle}</p>
               </div>
-              <div className="discord-card bg-[#36393f]">
+              <div className="discord-card bg-[#36393f] p-4 sm:p-6">
                 <form onSubmit={handleCalculate} className="space-y-6">
                   <div className="flex gap-4">
                     <div className="flex-1">
@@ -694,10 +694,10 @@ export default function Home() {
           {step === 4 && result && (
             <div key="results" className={`w-full ${isAnimatingOut ? 'fade-up-out' : 'fade-up-animate'}`}>
               <div className="mb-6">
-                <h1 className="text-3xl font-bold text-[#5865f2] text-center">{sectionTitles[4].title}</h1>
-                <p className="text-[#dcddde] text-center mt-2">{sectionTitles[4].subtitle}</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-[#5865f2] text-center">{sectionTitles[4].title}</h1>
+                <p className="text-[#dcddde] text-center mt-2 text-sm sm:text-base">{sectionTitles[4].subtitle}</p>
               </div>
-              <div className="discord-card bg-[#36393f]">
+              <div className="discord-card bg-[#36393f] p-4 sm:p-6">
                 <div className="space-y-4">
                   <div className="bg-[#40444b] p-4 rounded-md">
                     <div className="flex items-center justify-between">
