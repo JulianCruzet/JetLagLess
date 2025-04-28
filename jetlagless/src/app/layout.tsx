@@ -23,6 +23,7 @@ export default function RootLayout({
           <nav className="space-x-6">
             <a href="/" className="text-[#dcddde] hover:text-[#5865f2] font-medium">Calculator</a>
             <a href="/about" className="text-[#dcddde] hover:text-[#5865f2] font-medium">About</a>
+            <a href="https://juliancruzet.ca" target="_blank" rel="noopener noreferrer" className="text-[#dcddde] hover:text-[#5865f2] font-medium">Creator</a>
           </nav>
         </header>
         <main className="flex-1 flex flex-col items-center justify-center w-full h-full bg-[#36393f]">
