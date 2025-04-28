@@ -258,16 +258,9 @@ export default function Home() {
   const [bedtime, setBedtime] = useState('');
   const [waketime, setWaketime] = useState('');
   const [result, setResult] = useState<Result | null>(null);
-  const [fade, setFade] = useState(false);
-  const [headerRaised, setHeaderRaised] = useState(false);
-  const [buttonFade, setButtonFade] = useState(false);
-  const [titlePosition, setTitlePosition] = useState('translate-y-0');
   const [showTitle, setShowTitle] = useState(true);
-  const [titleFade, setTitleFade] = useState(false);
-  const [fadeIn, setFadeIn] = useState(true);
   const [landingFade, setLandingFade] = useState(false);
   const [showStep1, setShowStep1] = useState(false);
-  const [currentStep, setCurrentStep] = useState(0);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
 
   const sectionTitles = {
@@ -291,14 +284,6 @@ export default function Home() {
       title: "Your Jet Lag Schedule",
       subtitle: "Here's your personalized 5-day schedule to minimize jet lag."
     }
-  };
-
-  const sectionPositions: Record<number, string> = {
-    0: 'translate-y-0',
-    1: 'translate-y-[-80px]',
-    2: 'translate-y-[-80px]',
-    3: 'translate-y-[-80px]',
-    4: 'translate-y-[-80px]'
   };
 
   // Animation classes
@@ -340,12 +325,6 @@ export default function Home() {
     }
   `;
 
-  useEffect(() => {
-    setFadeIn(false);
-    const timeout = setTimeout(() => setFadeIn(true), 10);
-    return () => clearTimeout(timeout);
-  }, [step]);
-
   function nextStep() {
     setIsAnimatingOut(true);
     setTimeout(() => {
@@ -357,7 +336,6 @@ export default function Home() {
   function handleStart() {
     setLandingFade(true);
     setTimeout(() => {
-      setHeaderRaised(true);
       setShowTitle(false);
       setShowStep1(true);
       setTimeout(() => {
@@ -632,7 +610,6 @@ export default function Home() {
                       setShowTitle(true);
                       setShowStep1(false);
                       setLandingFade(false);
-                      setHeaderRaised(false);
                       setResult(null);
                       setDepartureCity('');
                       setArrivalCity('');
