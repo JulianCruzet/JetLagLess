@@ -247,6 +247,91 @@ interface Result {
   timeZoneInfo: TimeZoneInfo;
 }
 
+function getTimezoneOffset(city: string): number {
+  // This is a simplified mapping of cities to their UTC offsets
+  // In a production app, you'd want to use a proper timezone database
+  const timezoneMap: Record<string, number> = {
+    // North America
+    "New York, USA (JFK/LaGuardia)": -4,
+    "Los Angeles, USA (LAX)": -7,
+    "Chicago, USA (O'Hare)": -5,
+    "Toronto, Canada (Pearson)": -4,
+    "Vancouver, Canada (YVR)": -7,
+    "San Francisco, USA (SFO)": -7,
+    "Miami, USA (MIA)": -4,
+    "Seattle, USA (SEA)": -7,
+    "Boston, USA (Logan)": -4,
+    "Washington DC, USA (Dulles)": -4,
+    "Houston, USA (Bush)": -5,
+    "Dallas, USA (DFW)": -5,
+    "Atlanta, USA (Hartsfield-Jackson)": -4,
+    "Denver, USA (DIA)": -6,
+    "Montreal, Canada (Trudeau)": -4,
+    "Calgary, Canada (YYC)": -6,
+    
+    // Europe
+    "London, UK (Heathrow/Gatwick)": 1,
+    "Paris, France (Charles de Gaulle)": 2,
+    "Amsterdam, Netherlands (Schiphol)": 2,
+    "Frankfurt, Germany (FRA)": 2,
+    "Madrid, Spain (Barajas)": 2,
+    "Rome, Italy (Fiumicino)": 2,
+    "Istanbul, Turkey (IST)": 3,
+    "Moscow, Russia (Sheremetyevo)": 3,
+    "Munich, Germany (MUC)": 2,
+    "Barcelona, Spain (El Prat)": 2,
+    "Zurich, Switzerland (ZRH)": 2,
+    "Vienna, Austria (VIE)": 2,
+    "Stockholm, Sweden (Arlanda)": 2,
+    "Copenhagen, Denmark (CPH)": 2,
+    "Dublin, Ireland (DUB)": 1,
+    "Lisbon, Portugal (LIS)": 1,
+    
+    // Asia
+    "Tokyo, Japan (Narita/Haneda)": 9,
+    "Singapore, Singapore (Changi)": 8,
+    "Hong Kong, China (HKG)": 8,
+    "Seoul, South Korea (Incheon)": 9,
+    "Bangkok, Thailand (Suvarnabhumi)": 7,
+    "Dubai, UAE (DXB)": 4,
+    "Abu Dhabi, UAE (AUH)": 4,
+    "Doha, Qatar (Hamad)": 3,
+    "Shanghai, China (Pudong)": 8,
+    "Beijing, China (Capital)": 8,
+    "Mumbai, India (Chhatrapati Shivaji)": 5.5,
+    "Delhi, India (Indira Gandhi)": 5.5,
+    "Kuala Lumpur, Malaysia (KUL)": 8,
+    "Manila, Philippines (Ninoy Aquino)": 8,
+    "Jakarta, Indonesia (Soekarno-Hatta)": 7,
+    "Taipei, Taiwan (Taoyuan)": 8,
+    
+    // Oceania
+    "Sydney, Australia (Kingsford Smith)": 10,
+    "Melbourne, Australia (Tullamarine)": 10,
+    "Auckland, New Zealand (AKL)": 12,
+    "Brisbane, Australia (BNE)": 10,
+    "Perth, Australia (PER)": 8,
+    
+    // South America
+    "São Paulo, Brazil (Guarulhos)": -3,
+    "Rio de Janeiro, Brazil (Galeão)": -3,
+    "Buenos Aires, Argentina (Ezeiza)": -3,
+    "Santiago, Chile (Arturo Merino Benítez)": -4,
+    "Lima, Peru (Jorge Chávez)": -5,
+    "Bogotá, Colombia (El Dorado)": -5,
+    
+    // Africa
+    "Johannesburg, South Africa (O.R. Tambo)": 2,
+    "Cairo, Egypt (CAI)": 2,
+    "Nairobi, Kenya (Jomo Kenyatta)": 3,
+    "Addis Ababa, Ethiopia (Bole)": 3,
+    "Casablanca, Morocco (Mohammed V)": 1,
+    "Lagos, Nigeria (Murtala Muhammed)": 1
+  };
+
+  return timezoneMap[city] || 0;
+}
+
 export default function Home() {
   const [step, setStep] = useState(0);
   const [departureCity, setDepartureCity] = useState('');
@@ -353,7 +438,9 @@ export default function Home() {
     const usualWake = parse(waketime, 'HH:mm', new Date());
     
     // Calculate time zone difference in hours
-    const tzDiff = Math.round((arrDate.getTime() - depDate.getTime()) / (1000 * 60 * 60));
+    const departureTimezone = getTimezoneOffset(departureCity);
+    const arrivalTimezone = getTimezoneOffset(arrivalCity);
+    const tzDiff = arrivalTimezone - departureTimezone;
     
     // Determine start date based on adjustment preference
     let startDate: Date;
@@ -461,14 +548,62 @@ export default function Home() {
                       />
                     </div>
                   </div>
-                  <div className="flex gap-4">
-                    <div className="flex-1">
-                      <label className="block text-sm font-medium mb-2 text-[#dcddde]">Departure Date & Time</label>
-                      <input type="datetime-local" className="discord-input w-full bg-[#40444b] text-[#dcddde] placeholder-[#72767d] border-[#202225]" value={departureDateTime} onChange={e => setDepartureDateTime(e.target.value)} required />
+                  <div className="space-y-4">
+                    <div className="flex gap-4">
+                      <div className="flex-1">
+                        <label className="block text-sm font-medium mb-2 text-[#dcddde]">Departure Date</label>
+                        <input 
+                          type="date" 
+                          className="discord-input w-full bg-[#40444b] text-[#dcddde] placeholder-[#72767d] border-[#202225]" 
+                          value={departureDateTime.split('T')[0]} 
+                          onChange={e => {
+                            const time = departureDateTime.split('T')[1] || '00:00';
+                            setDepartureDateTime(`${e.target.value}T${time}`);
+                          }} 
+                          required 
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <label className="block text-sm font-medium mb-2 text-[#dcddde]">Departure Time</label>
+                        <input 
+                          type="time" 
+                          className="discord-input w-full bg-[#40444b] text-[#dcddde] placeholder-[#72767d] border-[#202225]" 
+                          value={departureDateTime.split('T')[1] || '00:00'} 
+                          onChange={e => {
+                            const date = departureDateTime.split('T')[0] || new Date().toISOString().split('T')[0];
+                            setDepartureDateTime(`${date}T${e.target.value}`);
+                          }} 
+                          required 
+                        />
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <label className="block text-sm font-medium mb-2 text-[#dcddde]">Arrival Date & Time</label>
-                      <input type="datetime-local" className="discord-input w-full bg-[#40444b] text-[#dcddde] placeholder-[#72767d] border-[#202225]" value={arrivalDateTime} onChange={e => setArrivalDateTime(e.target.value)} required />
+                    <div className="flex gap-4">
+                      <div className="flex-1">
+                        <label className="block text-sm font-medium mb-2 text-[#dcddde]">Arrival Date</label>
+                        <input 
+                          type="date" 
+                          className="discord-input w-full bg-[#40444b] text-[#dcddde] placeholder-[#72767d] border-[#202225]" 
+                          value={arrivalDateTime.split('T')[0]} 
+                          onChange={e => {
+                            const time = arrivalDateTime.split('T')[1] || '00:00';
+                            setArrivalDateTime(`${e.target.value}T${time}`);
+                          }} 
+                          required 
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <label className="block text-sm font-medium mb-2 text-[#dcddde]">Arrival Time</label>
+                        <input 
+                          type="time" 
+                          className="discord-input w-full bg-[#40444b] text-[#dcddde] placeholder-[#72767d] border-[#202225]" 
+                          value={arrivalDateTime.split('T')[1] || '00:00'} 
+                          onChange={e => {
+                            const date = arrivalDateTime.split('T')[0] || new Date().toISOString().split('T')[0];
+                            setArrivalDateTime(`${date}T${e.target.value}`);
+                          }} 
+                          required 
+                        />
+                      </div>
                     </div>
                   </div>
                   <button type="submit" className="discord-button w-full bg-[#5865f2] text-white font-bold py-3 text-lg hover:bg-[#4752c4] transition-all duration-300">Next</button>
@@ -570,8 +705,8 @@ export default function Home() {
                         <p className="text-[#72767d] text-xs">Departure</p>
                         <p className="text-[#dcddde] font-medium">{result.timeZoneInfo.departureCity}</p>
                       </div>
-                      <div className="flex items-center justify-center w-12">
-                        <span className="text-[#5865f2] text-2xl font-bold">
+                      <div className="flex items-center justify-center w-24 pl-8">
+                        <span className="text-[#5865f2] text-4xl font-bold">
                           {result.timeZoneInfo.timeDifference > 0 ? '⟶' : '⟵'}
                         </span>
                       </div>
